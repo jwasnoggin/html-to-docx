@@ -1,0 +1,21 @@
+declare const buildBold: () => import("xmlbuilder2/lib/interfaces").XMLBuilder;
+declare const buildItalics: () => import("xmlbuilder2/lib/interfaces").XMLBuilder;
+declare const buildUnderline: (type?: string) => import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export declare const buildRunFontFragment: (fontName?: string) => import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export declare const buildRunStyleFragment: (type?: string) => import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export declare const buildTableRowHeight: (tableRowHeight: string) => import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export declare const buildColor: (colorCode: string) => import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export declare const buildFontSize: (fontSize: number) => import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export declare const buildHighlight: (color?: string) => import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export declare const buildVertAlign: (type?: string) => import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export declare const buildStrike: () => import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export declare const buildNumberingProperties: (levelId: any, numberingId: any) => import("xmlbuilder2/lib/interfaces").XMLBuilder;
+declare const buildNumberingInstances: () => import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export declare const buildSpacing: (lineSpacing: any, beforeSpacing: any, afterSpacing: any) => import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export declare const buildIndentation: ({ left, right }: {
+    left: any;
+    right: any;
+}) => import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export declare const buildPStyle: (style?: string) => import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export declare const buildHorizontalAlignment: (horizontalAlignment: any) => import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export { buildBold, buildItalics, buildUnderline, buildNumberingInstances };

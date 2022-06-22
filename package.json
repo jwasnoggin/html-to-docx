@@ -19,8 +19,7 @@
     "lint": "eslint --fix ./src",
     "prettier:check": "prettier --check '**/*.{js}'",
     "validate": "run-s lint prettier:check",
-    "build": "rollup -c",
-    "prepare": "husky install"
+    "build": "rollup -c"
   },
   "repository": {
     "type": "git",
