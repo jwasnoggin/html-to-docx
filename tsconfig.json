@@ -6,7 +6,7 @@
     "allowJs": true,
     "esModuleInterop": true,
     "moduleResolution": "Node",
-    "target": "es2015",
+    "target": "es2017",
     "declaration": true,
     "declarationDir": ".",
     "typeRoots": ["./types", "./node_modules/@types"]

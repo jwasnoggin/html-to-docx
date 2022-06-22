@@ -2,6 +2,8 @@ import { DocumentOptions } from './types';
 /* eslint-disable no-useless-escape */
 import JSZip from 'jszip';
 import addFilesToContainer from './html-to-docx';
+import DocxDocument from 'docx-document';
+import { renderDocumentFile } from 'helpers';
 
 const minifyHTMLString = (htmlString) => {
   try {
@@ -23,7 +25,7 @@ const minifyHTMLString = (htmlString) => {
   }
 };
 
-async function generateContainer(
+export async function generateContainer(
   htmlString,
   headerHTMLString,
   documentOptions: DocumentOptions = {},
@@ -61,4 +63,19 @@ async function generateContainer(
   );
 }
 
-export default generateContainer;
+/**
+ * Convert a HTML snippet into the corresponding XML snippet
+ * @param htmlString 
+ * @returns XML (no document or body tag)
+ */
+export function convertSnippetToXML(htmlString: string): string {
+  const docxDocument = new DocxDocument({ htmlString });
+  // Conversion to Word XML happens here
+  docxDocument.documentXML = renderDocumentFile(docxDocument);
+  const docXML = docxDocument.generateDocumentXML(false);
+
+  // Get the body node from the document
+  const body = docXML.root().first();
+  // If we just extract the nodes inside the body, they lose their w: prefix for some reason. So just do string manipulation to remove the body tags.
+  return body.toString().replace(/(<w:body.*?>)/, '').replace(/<\/w:body>/, '');
+}

@@ -288,7 +288,9 @@ class DocxDocument {
     return contentTypesXML.toString({ prettyPrint: true });
   }
 
-  generateDocumentXML() {
+  generateDocumentXML(returnString: false): XMLBuilder;
+  generateDocumentXML(returnString?: true): string;
+  generateDocumentXML(returnString: boolean = true) {
     const documentXML = create(
       { encoding: 'UTF-8', standalone: true },
       generateDocumentTemplate(this.width, this.height, this.orientation, this.margins)
@@ -319,8 +321,10 @@ class DocxDocument {
             .att('@w', 'restart', restart)
         );
     }
-
-    return documentXML.toString({ prettyPrint: true });
+    if (returnString) {
+      return documentXML.toString({ prettyPrint: true });
+    }
+    return documentXML;
   }
 
   generateCoreXML() {

@@ -196,7 +196,7 @@ export function convertVTreeToXML(
   return xmlFragment;
 }
 
-function renderDocumentFile(docxDocumentInstance: DocxDocument) {
+function renderDocumentFile(docxDocumentInstance: DocxDocument): XMLBuilder {
   const vTree = convertHTML(docxDocumentInstance.htmlString);
 
   const xmlFragment = fragment({ namespaceAlias: { w: namespaces.w } });

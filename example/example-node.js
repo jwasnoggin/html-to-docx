@@ -144,7 +144,7 @@ const htmlString = `<!DOCTYPE html>
 </html>`;
 
 (async () => {
-  const fileBuffer = await HTMLtoDOCX(htmlString, null, {
+    const fileBuffer = await HTMLtoDOCX.generateContainer(htmlString, null, {
     table: { row: { cantSplit: true } },
     footer: true,
     pageNumber: true,
