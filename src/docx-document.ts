@@ -35,6 +35,7 @@ import {
 } from './constants';
 import { getListStyleType, getListPrefixSuffix } from './utils/list';
 import { XMLBuilder } from 'xmlbuilder2/lib/interfaces';
+import JSZip from 'jszip';
 
 export type SectionXMLResponse = SectionXMLHeader | SectionXMLFooter;
 
@@ -167,7 +168,7 @@ type Orientation = 'portrait' | 'landscape';
 type HeaderType = 'default' | 'first' | 'even';
 
 class DocxDocument {
-  zip: any;
+  zip: JSZip;
   htmlString: string;
   orientation: Orientation;
   width: number;

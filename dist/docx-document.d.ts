@@ -1,4 +1,5 @@
 import { XMLBuilder } from 'xmlbuilder2/lib/interfaces';
+import JSZip from 'jszip';
 export declare type SectionXMLResponse = SectionXMLHeader | SectionXMLFooter;
 export declare type SectionType = 'header' | 'footer';
 export declare type SectionXMLHeader = {
@@ -34,7 +35,7 @@ declare type FooterType = 'default' | 'first' | 'even';
 declare type Orientation = 'portrait' | 'landscape';
 declare type HeaderType = 'default' | 'first' | 'even';
 declare class DocxDocument {
-    zip: any;
+    zip: JSZip;
     htmlString: string;
     orientation: Orientation;
     width: number;

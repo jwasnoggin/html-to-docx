@@ -66,16 +66,22 @@ export async function generateContainer(
 /**
  * Convert a HTML snippet into the corresponding XML snippet
  * @param htmlString 
- * @returns XML (no document or body tag)
+ * @returns xmlString: XML snippet (no document or body tag) 
+ * 
+ * zip: The generated docx file (including media files)
  */
-export function convertSnippetToXML(htmlString: string): string {
-  const docxDocument = new DocxDocument({ htmlString });
+export function convertSnippetToXML(htmlString: string): { xmlString: string, zip: JSZip } {
+  const zip = new JSZip();
+  const docxDocument = new DocxDocument({ htmlString, zip });
   // Conversion to Word XML happens here
   docxDocument.documentXML = renderDocumentFile(docxDocument);
   const docXML = docxDocument.generateDocumentXML(false);
 
   // Get the body node from the document
   const body = docXML.root().first();
-  // If we just extract the nodes inside the body, they lose their w: prefix for some reason. So just do string manipulation to remove the body tags.
-  return body.toString().replace(/(<w:body.*?>)/, '').replace(/<\/w:body>/, '');
+  // If we extract the nodes inside the body, they lose their w: prefix for some reason. So just do string manipulation to remove the body tags.
+  return {
+    xmlString: body.toString().replace(/(<w:body.*?>)/, '').replace(/<\/w:body>/, ''),
+    zip: docxDocument.zip
+  };
 }

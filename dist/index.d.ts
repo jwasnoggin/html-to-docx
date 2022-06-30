@@ -1,9 +1,15 @@
 /// <reference types="node" />
 import { DocumentOptions } from './types';
+import JSZip from 'jszip';
 export declare function generateContainer(htmlString: any, headerHTMLString: any, documentOptions: DocumentOptions, footerHTMLString: any): Promise<Buffer | Blob>;
 /**
  * Convert a HTML snippet into the corresponding XML snippet
  * @param htmlString
- * @returns XML (no document or body tag)
+ * @returns xmlString: XML snippet (no document or body tag)
+ *
+ * zip: The generated docx file (including media files)
  */
-export declare function convertSnippetToXML(htmlString: string): string;
+export declare function convertSnippetToXML(htmlString: string): {
+    xmlString: string;
+    zip: JSZip;
+};
