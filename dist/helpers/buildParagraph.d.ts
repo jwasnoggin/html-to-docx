@@ -1,5 +1,6 @@
 /// <reference types="virtual-dom" />
 import DocxDocument from 'docx-document';
+import { RunAttributes } from './buildRunProperties';
 declare type NumberingAttributes = {
     levelId: any;
     numberingId: any;
@@ -19,5 +20,5 @@ export declare type ParagraphAttributes = {
     paragraphStyle?: string;
     numbering?: NumberingAttributes;
 };
-export declare function buildParagraph(vNode: VirtualDOM.VNode | VirtualDOM.VTree, attributes: ParagraphAttributes, docxDocumentInstance: DocxDocument): import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export declare function buildParagraph(vNode: VirtualDOM.VNode | VirtualDOM.VTree, attributes: ParagraphAttributes | RunAttributes, docxDocumentInstance: DocxDocument): import("xmlbuilder2/lib/interfaces").XMLBuilder;
 export {};

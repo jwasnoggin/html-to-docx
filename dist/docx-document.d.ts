@@ -96,9 +96,9 @@ declare class DocxDocument {
         xmlString: string;
     }[];
     createNumbering(type: any, properties: any): number;
-    createMediaFile(base64String: any): {
+    createMediaFile(base64String: string): {
         id: number;
-        fileContent: any;
+        fileContent: string;
         fileNameWithExtension: string;
     };
     createDocumentRelationships(fileName: string, type: any, target: any, targetMode?: string): number;

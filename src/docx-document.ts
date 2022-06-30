@@ -495,7 +495,7 @@ class DocxDocument {
     return this.lastNumberingId;
   }
 
-  createMediaFile(base64String) {
+  createMediaFile(base64String: string) {
     // eslint-disable-next-line no-useless-escape
     const matches = base64String.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
     if (matches.length !== 3) {

@@ -1,13 +1,13 @@
 import { DocumentOptions } from './types';
 /* eslint-disable no-useless-escape */
 import JSZip from 'jszip';
-import addFilesToContainer from './html-to-docx';
-import DocxDocument from 'docx-document';
-import { renderDocumentFile } from 'helpers';
+import addFilesToContainer, { addRelsToZip } from './html-to-docx';
+import DocxDocument from './docx-document';
+import { renderDocumentFile } from './helpers';
 
-const minifyHTMLString = (htmlString) => {
+const minifyHTMLString = (htmlString: string) => {
   try {
-    if (typeof htmlString === 'string' || htmlString instanceof String) {
+    if (typeof htmlString === 'string') {
       const minifiedHTMLString = htmlString
         .replace(/\n/g, ' ')
         .replace(/\r/g, ' ')
@@ -26,10 +26,10 @@ const minifyHTMLString = (htmlString) => {
 };
 
 export async function generateContainer(
-  htmlString,
-  headerHTMLString,
+  htmlString: string,
+  headerHTMLString: string,
   documentOptions: DocumentOptions = {},
-  footerHTMLString
+  footerHTMLString: string
 ) {
   const zip = new JSZip();
 
@@ -77,10 +77,15 @@ export function convertSnippetToXML(htmlString: string): { xmlString: string, zi
   docxDocument.documentXML = renderDocumentFile(docxDocument);
   const docXML = docxDocument.generateDocumentXML(false);
 
+  const rels = docxDocument.relationships;
+  console.log('rels', rels[0].rels);
+
+  addRelsToZip(zip, docxDocument);
+
   // Get the body node from the document
   const body = docXML.root().first();
-  // If we extract the nodes inside the body, they lose their w: prefix for some reason. So just do string manipulation to remove the body tags.
   return {
+    // If we extract the nodes inside the body, they lose their w: prefix for some reason. So just do string manipulation to remove the body tags.
     xmlString: body.toString().replace(/(<w:body.*?>)/, '').replace(/<\/w:body>/, ''),
     zip: docxDocument.zip
   };

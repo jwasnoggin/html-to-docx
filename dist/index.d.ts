@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import { DocumentOptions } from './types';
 import JSZip from 'jszip';
-export declare function generateContainer(htmlString: any, headerHTMLString: any, documentOptions: DocumentOptions, footerHTMLString: any): Promise<Buffer | Blob>;
+export declare function generateContainer(htmlString: string, headerHTMLString: string, documentOptions: DocumentOptions, footerHTMLString: string): Promise<Buffer | Blob>;
 /**
  * Convert a HTML snippet into the corresponding XML snippet
  * @param htmlString

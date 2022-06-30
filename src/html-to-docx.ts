@@ -204,6 +204,14 @@ function addFilesToContainer(
     .file('settings.xml', docxDocument.generateSettingsXML(), { createFolders: false })
     .file('webSettings.xml', docxDocument.generateWebSettingsXML(), { createFolders: false });
 
+  addRelsToZip(zip, docxDocument);
+
+  zip.file('[Content_Types].xml', docxDocument.generateContentTypesXML(), { createFolders: false });
+
+  return zip;
+}
+
+export function addRelsToZip(zip: JSZip, docxDocument: DocxDocument) {
   const relationshipXMLs = docxDocument.generateRelsXML();
   if (relationshipXMLs && Array.isArray(relationshipXMLs)) {
     relationshipXMLs.forEach(({ fileName, xmlString }) => {
@@ -212,10 +220,6 @@ function addFilesToContainer(
       });
     });
   }
-
-  zip.file('[Content_Types].xml', docxDocument.generateContentTypesXML(), { createFolders: false });
-
-  return zip;
 }
 
 export default addFilesToContainer;

@@ -14,6 +14,7 @@ import { fixupMargin } from './fixupMargin';
 import { fixupFontSize } from './fixupFontSize';
 import { fixupColorCode } from './fixupColorCode';
 import DocxDocument from 'docx-document';
+import { RunAttributes } from './buildRunProperties';
 
 type NumberingAttributes = {
   levelId: any;
@@ -38,7 +39,7 @@ export type ParagraphAttributes = {
 
 export function buildParagraph(
   vNode: VirtualDOM.VNode | VirtualDOM.VTree,
-  attributes: ParagraphAttributes,
+  attributes: ParagraphAttributes | RunAttributes,
   docxDocumentInstance: DocxDocument
 ) {
   const paragraphFragment = fragment({ namespaceAlias: { w: namespaces.w } }).ele('@w', 'p');
