@@ -81,6 +81,7 @@ export function convertSnippetToXML(htmlString: string): { xmlString: string, zi
   console.log('rels', rels[0].rels);
 
   addRelsToZip(zip, docxDocument);
+  zip.folder('word').file('styles.xml', docxDocument.generateStylesXML(), { createFolders: false })
 
   // Get the body node from the document
   const body = docXML.root().first();
