@@ -163,8 +163,12 @@ function findXMLEquivalent(
     // eslint-disable-next-line no-plusplus
     for (let index = 0; index < vNode.children.length; index++) {
       const childVNode = vNode.children[index];
-      // eslint-disable-next-line no-use-before-define
-      convertVTreeToXML(docxDocumentInstance, childVNode, xmlFragment);
+      if (vNode.tagName === 'div' && isVText(childVNode)) {
+        xmlFragment.import(buildParagraph(childVNode, {}, docxDocumentInstance));
+      } else {
+        // eslint-disable-next-line no-use-before-define
+        convertVTreeToXML(docxDocumentInstance, childVNode, xmlFragment);
+      }
     }
   }
 }

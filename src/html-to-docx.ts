@@ -194,10 +194,11 @@ function addFilesToContainer(
     .file(themeFileNameWithExt, docxDocument.generateThemeXML(), {
       createFolders: false,
     });
-
+  const docxml = docxDocument.generateDocumentXML();
+  // console.log('docxml', docxml);
   zip
     .folder(wordFolder)
-    .file('document.xml', docxDocument.generateDocumentXML(), { createFolders: false })
+    .file('document.xml', docxml, { createFolders: false })
     .file('fontTable.xml', docxDocument.generateFontTableXML(), { createFolders: false })
     .file('styles.xml', docxDocument.generateStylesXML(), { createFolders: false })
     .file('numbering.xml', docxDocument.generateNumberingXML(), { createFolders: false })

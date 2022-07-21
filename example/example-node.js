@@ -143,13 +143,92 @@ const htmlString = `<!DOCTYPE html>
     </body>
 </html>`;
 
+const htmlString2 = `<!DOCTYPE html> <html lang="en"> <head><title>Noggin print template</title> <style type="text/css">
+body {
+    font-family: "Lato", Arial, sans-serif;
+    color: #3B3B3B;
+    font-size: 0.9rem;
+  }
+
+  main {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+
+  .dt {
+    color: #878787;
+    margin-bottom: 5px;
+    font-size: 15px;
+  }
+
+  .dd {
+    margin-left: 0;
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+
+  .dd .rich-text-value {
+    width: 100%;
+  }
+
+  h2 {
+    font-weight: normal;
+    font-size: 28px;
+  }
+
+  h3 {
+    font-weight: normal;
+    font-size: 20px;
+  }
+
+  h4 {
+    font-weight: normal;
+    font-size: 18px;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .font-small {
+    font-size: 0.9rem;
+  }
+
+  .tab {
+    page-break-after: always;
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .field {
+    width: 50%;
+    margin-right: 50px;
+  }
+
+  .field:only-child {
+    width: 100%;
+  }
+</style> <meta charset="utf-8"> </head>
+<body>
+  <main>
+      <h2 class="text-center">Form test type</h2>
+<div class="dl"><h4 class="dt">First name</h4><div class="dd">Test 2</div><h4 class="dt">Last name</h4><div class="dd">Test Last 2</div><h4 class="dt">Age</h4><div class="dd"><div class="empty-value">-</div></div><h4 class="dt">Over 18</h4><div class="dd"><div class="empty-value">-</div></div><h4 class="dt">Birthday</h4><div class="dd"><div class="empty-value">-</div></div><h4 class="dt">Email</h4><div class="dd"><div class="empty-value">-</div></div><h4 class="dt">Web address</h4><div class="dd"><div class="empty-value">-</div></div><h4 class="dt">Phone Number</h4><div class="dd"><div class="empty-value">-</div></div><h4 class="dt">Avatar</h4><div class="dd"><div class="empty-value">-</div></div><h4 class="dt">Person object field</h4><div class="dd"><div class="empty-value">-</div></div><h4 class="dt">People object field</h4><div class="dd"><div class="empty-value">-</div></div><h4 class="dt">Chart object field</h4><div class="dd"><div class="empty-value">-</div></div><h4 class="dt">Assignment field</h4><div class="dd"><div class="empty-value">-</div></div></div></main>
+</body>
+</html>
+`;
 (async () => {
-    const fileBuffer = await HTMLtoDOCX.generateContainer(htmlString, null, {
+    const fileBuffer = await HTMLtoDOCX.generateContainer(htmlString2, null, {
     table: { row: { cantSplit: true } },
     footer: true,
     pageNumber: true,
   });
-
+    console.log('filepath', filePath);
   fs.writeFile(filePath, fileBuffer, (error) => {
     if (error) {
       console.log('Docx file creation failed', error);
