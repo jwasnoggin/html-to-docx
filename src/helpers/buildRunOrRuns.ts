@@ -4,8 +4,13 @@ import { colorlessColors } from '../constants';
 import { fixupColorCode } from './fixupColorCode';
 import { fixupFontSize } from './fixupFontSize';
 import { buildRun } from './buildRun';
+import DocxDocument from 'docx-document';
 
-export function buildRunOrRuns(vNode: VirtualDOM.VTree, attributes: RunAttributes) {
+export function buildRunOrRuns(
+  vNode: VirtualDOM.VTree,
+  attributes: RunAttributes,
+  docxDocumentInstance?: DocxDocument
+) {
   if (isVNode(vNode) && vNode.tagName === 'span') {
     const runFragments = [];
 
@@ -31,12 +36,12 @@ export function buildRunOrRuns(vNode: VirtualDOM.VTree, attributes: RunAttribute
           modifiedAttributes.fontSize = fixupFontSize(vNode.properties.style['font-size']);
         }
       }
-      runFragments.push(buildRun(childVNode, modifiedAttributes));
+      runFragments.push(buildRun(childVNode, modifiedAttributes, docxDocumentInstance));
     }
 
     return runFragments;
   } else {
-    const runFragment = buildRun(vNode, attributes);
+    const runFragment = buildRun(vNode, attributes, docxDocumentInstance);
 
     return runFragment;
   }

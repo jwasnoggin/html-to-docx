@@ -3,8 +3,13 @@ import isVNode from 'virtual-dom/vnode/is-vnode';
 import namespaces from '../namespaces';
 import { hyperlinkType } from '../constants';
 import { buildRunOrRuns } from './buildRunOrRuns';
+import DocxDocument from 'docx-document';
 
-export function buildRunOrHyperLink(vNode, attributes, docxDocumentInstance) {
+export function buildRunOrHyperLink(
+  vNode: VirtualDOM.VNode,
+  attributes,
+  docxDocumentInstance: DocxDocument
+) {
   if (isVNode(vNode) && vNode.tagName === 'a') {
     const relationshipId = docxDocumentInstance.createDocumentRelationships(
       docxDocumentInstance.relationshipFilename,
@@ -18,7 +23,11 @@ export function buildRunOrHyperLink(vNode, attributes, docxDocumentInstance) {
     const modifiedAttributes = { ...attributes };
     modifiedAttributes.hyperlink = true;
 
-    const runFragments = buildRunOrRuns(vNode.children[0], modifiedAttributes);
+    const runFragments = buildRunOrRuns(
+      vNode.children[0],
+      modifiedAttributes,
+      docxDocumentInstance
+    );
     if (Array.isArray(runFragments)) {
       for (let index = 0; index < runFragments.length; index++) {
         const runFragment = runFragments[index];
@@ -32,7 +41,7 @@ export function buildRunOrHyperLink(vNode, attributes, docxDocumentInstance) {
 
     return hyperlinkFragment;
   }
-  const runFragments = buildRunOrRuns(vNode, attributes);
+  const runFragments = buildRunOrRuns(vNode, attributes, docxDocumentInstance);
 
   return runFragments;
 }

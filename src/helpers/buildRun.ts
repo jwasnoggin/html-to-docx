@@ -8,8 +8,15 @@ import { buildTextElement } from './buildTextElement';
 import { buildTextFormatting } from './buildTextFormatting';
 import { buildRunProperties, RunAttributes } from './buildRunProperties';
 import VText from 'virtual-dom/vnode/vtext';
+import { getPictureAttributes } from './buildImage';
+import DocxDocument from 'docx-document';
+import { computeImageDimensions } from './computeImageDimensions';
 
-export function buildRun(vNode: VirtualDOM.VNode | VirtualDOM.VTree, attributes: RunAttributes) {
+export function buildRun(
+  vNode: VirtualDOM.VNode | VirtualDOM.VTree,
+  attributes: RunAttributes,
+  docxDocumentInstance?: DocxDocument
+) {
   const runFragment = fragment({ namespaceAlias: { w: namespaces.w } }).ele('@w', 'r');
   const runPropertiesFragment = buildRunProperties(attributes);
 
@@ -77,6 +84,12 @@ export function buildRun(vNode: VirtualDOM.VNode | VirtualDOM.VTree, attributes:
   }
 
   runFragment.import(runPropertiesFragment);
+
+  if (isVNode(vNode) && vNode.tagName === 'img') {
+    attributes = { ...attributes, ...getPictureAttributes(docxDocumentInstance, vNode) };
+    computeImageDimensions(vNode, attributes);
+  }
+
   if (isVText(vNode)) {
     const textFragment = buildTextElement(vNode.text);
     runFragment.import(textFragment);

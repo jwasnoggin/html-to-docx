@@ -2,23 +2,36 @@ import sizeOf from 'image-size';
 import { buildParagraph } from './buildParagraph';
 import { imageType, internalRelationship } from '../constants';
 import DocxDocument from 'docx-document';
+import { get } from 'lodash-es';
+import { XMLBuilder } from 'xmlbuilder2/lib/interfaces';
+import { RunAttributes } from './buildRunProperties';
 
 export function buildImage(
   docxDocumentInstance: DocxDocument,
   vNode: VirtualDOM.VNode | VirtualDOM.VTree,
   maximumWidth: number | null = null
-) {
-  let response: { id: number; fileContent: string; fileNameWithExtension: string; } | null = null;
+): XMLBuilder | undefined {
+  const attrs = getPictureAttributes(docxDocumentInstance, vNode, maximumWidth);
+  if (attrs) {
+    const imageFragment = buildParagraph(vNode, attrs, docxDocumentInstance);
+    return imageFragment;
+  }
+}
+
+export function getPictureAttributes(
+  docxDocumentInstance: DocxDocument,
+  vNode: VirtualDOM.VNode | VirtualDOM.VTree,
+  maximumWidth: number | null = null
+): RunAttributes | undefined {
+  let response: { id: number; fileContent: string; fileNameWithExtension: string } | null = null;
   try {
-    console.log('srcStart', ((vNode as any).properties.src as string).substring(0, 100));
     try {
       // libtidy encodes the image src
-      const decoded = decodeURIComponent((vNode as any).properties.src);
+      const decoded = decodeURIComponent(get(vNode, 'properties.src'));
       console.log('decoded', decoded.substring(0, 100));
-      response = docxDocumentInstance.createMediaFile(
-        decoded
-      );
+      response = docxDocumentInstance.createMediaFile(decoded);
     } catch (error) {
+      console.warn('error creating media', error);
       // NOOP
     }
     if (response) {
@@ -39,21 +52,15 @@ export function buildImage(
       const imageBuffer = Buffer.from(response.fileContent, 'base64');
       const imageProperties = sizeOf(imageBuffer);
 
-      const imageFragment = buildParagraph(
-        vNode,
-        {
-          type: 'picture',
-          inlineOrAnchored: true,
-          relationshipId: documentRelsId,
-          ...response,
-          maximumWidth: maximumWidth || docxDocumentInstance.availableDocumentSpace,
-          originalWidth: imageProperties.width,
-          originalHeight: imageProperties.height,
-        },
-        docxDocumentInstance
-      );
-
-      return imageFragment;
+      return {
+        type: 'picture',
+        inlineOrAnchored: true,
+        relationshipId: documentRelsId,
+        ...response,
+        maximumWidth: maximumWidth || docxDocumentInstance.availableDocumentSpace,
+        originalWidth: imageProperties.width,
+        originalHeight: imageProperties.height,
+      };
     }
   } catch (err) {
     console.log('error building image');
