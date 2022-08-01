@@ -45,7 +45,10 @@ export function buildParagraph(
   attributes: ParagraphAttributes | RunAttributes,
   docxDocumentInstance: DocxDocument
 ): XMLBuilder {
-  if (isVText(vNode) && vNode.text === ' ') return fragment();
+  if (isVText(vNode) && vNode.text === ' ') {
+    console.trace('space node');
+    return fragment();
+  }
 
   const paragraphFragment = fragment({ namespaceAlias: { w: namespaces.w } }).ele('@w', 'p');
   const modifiedAttributes = { ...attributes };
