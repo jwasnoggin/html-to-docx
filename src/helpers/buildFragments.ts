@@ -99,7 +99,7 @@ export const buildSpacing = (lineSpacing, beforeSpacing, afterSpacing) => {
     spacingFragment.att('@w', 'after', afterSpacing);
   }
 
-  spacingFragment.att('@w', 'lineRule', 'exact').up();
+  spacingFragment.att('@w', 'lineRule', 'auto').up();
 
   return spacingFragment;
 };
