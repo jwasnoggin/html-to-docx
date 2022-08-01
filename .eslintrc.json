@@ -14,5 +14,8 @@
     ],
     "default-case": "off"
   },
-  "ignorePatterns": "dist/**/*.js"
+  "ignorePatterns": "dist/**/*.js",
+  "env": {
+    "node": true
+  }
 }

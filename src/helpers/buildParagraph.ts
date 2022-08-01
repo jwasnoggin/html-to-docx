@@ -15,6 +15,7 @@ import { fixupFontSize } from './fixupFontSize';
 import { fixupColorCode } from './fixupColorCode';
 import DocxDocument from 'docx-document';
 import { RunAttributes } from './buildRunProperties';
+import { VNode } from 'virtual-dom';
 
 type NumberingAttributes = {
   levelId: any;
@@ -157,7 +158,7 @@ export function buildParagraph(
       for (let index = 0; index < vNode.children.length; index++) {
         const childVNode = vNode.children[index];
         const runOrHyperlinkFragments = buildRunOrHyperLink(
-          childVNode,
+          childVNode as VNode,
           modifiedAttributes,
           docxDocumentInstance
         );

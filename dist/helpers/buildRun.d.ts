@@ -1,3 +1,4 @@
 /// <reference types="virtual-dom" />
 import { RunAttributes } from './buildRunProperties';
-export declare function buildRun(vNode: VirtualDOM.VNode | VirtualDOM.VTree, attributes: RunAttributes): import("xmlbuilder2/lib/interfaces").XMLBuilder;
+import DocxDocument from 'docx-document';
+export declare function buildRun(vNode: VirtualDOM.VNode | VirtualDOM.VTree, attributes: RunAttributes, docxDocumentInstance?: DocxDocument): import("xmlbuilder2/lib/interfaces").XMLBuilder;

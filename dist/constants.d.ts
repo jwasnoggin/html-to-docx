@@ -24,7 +24,15 @@ declare const defaultFont = "Times New Roman";
 declare const defaultFontSize = 22;
 declare const defaultDocumentOptions: {
     orientation: string;
-    margins: any;
+    margins: {
+        top: number;
+        right: number;
+        bottom: number;
+        left: number;
+        header: number;
+        footer: number;
+        gutter: number;
+    };
     title: string;
     subject: string;
     creator: string;
