@@ -16,6 +16,8 @@ import { fixupColorCode } from './fixupColorCode';
 import DocxDocument from 'docx-document';
 import { RunAttributes } from './buildRunProperties';
 import { VNode } from 'virtual-dom';
+import isVText from 'virtual-dom/vnode/is-vtext';
+import { XMLBuilder } from 'xmlbuilder2/lib/interfaces';
 
 type NumberingAttributes = {
   levelId: any;
@@ -42,7 +44,9 @@ export function buildParagraph(
   vNode: VirtualDOM.VNode | VirtualDOM.VTree,
   attributes: ParagraphAttributes | RunAttributes,
   docxDocumentInstance: DocxDocument
-) {
+): XMLBuilder {
+  if (isVText(vNode) && vNode.text === ' ') return fragment();
+
   const paragraphFragment = fragment({ namespaceAlias: { w: namespaces.w } }).ele('@w', 'p');
   const modifiedAttributes = { ...attributes };
   if (isVNode(vNode) && vNode.properties && vNode.properties.style) {
@@ -183,7 +187,7 @@ export function buildParagraph(
     if (isVNode(vNode) && vNode.tagName === 'img') {
       computeImageDimensions(vNode, modifiedAttributes);
     }
-    const runFragments = buildRunOrRuns(vNode, modifiedAttributes);
+    const runFragments = buildRunOrRuns(vNode, modifiedAttributes, docxDocumentInstance);
     if (Array.isArray(runFragments)) {
       for (let index = 0; index < runFragments.length; index++) {
         const runFragment = runFragments[index];

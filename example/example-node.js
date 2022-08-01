@@ -144,14 +144,18 @@ const htmlString = `<!DOCTYPE html>
     </body>
 </html>`;
 
-const htmlString2 = fs.readFileSync('./testout/out.html').toString();
-console.log(htmlString2);
+const htmlString2 = fs.readFileSync('./testout/html.html').toString();
 (async () => {
-  const fileBuffer = await HTMLtoDOCX.generateContainer(htmlString2, null, {
-    table: { row: { cantSplit: true } },
-    footer: true,
-    pageNumber: true,
-  });
+  const fileBuffer = await HTMLtoDOCX.generateContainer(
+    htmlString2,
+    '',
+    {
+      table: { row: { cantSplit: true } },
+      footer: true,
+      pageNumber: true,
+    },
+    ''
+  );
   console.log('filepath', filePath);
   fs.writeFile(filePath, fileBuffer, (error) => {
     if (error) {
