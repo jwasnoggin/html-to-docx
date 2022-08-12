@@ -167,6 +167,17 @@ type Orientation = 'portrait' | 'landscape';
 
 type HeaderType = 'default' | 'first' | 'even';
 
+type Relationship = {
+  fileName: string;
+  lastRelsId: number;
+  rels: {
+    relationshipId: number | string;
+    type: string;
+    target: string;
+    targetMode: string;
+  }[];
+};
+
 class DocxDocument {
   zip: JSZip;
   htmlString: string;
@@ -202,7 +213,7 @@ class DocxDocument {
   stylesObjects: unknown[];
   numberingObjects: NumberObjectProperties[];
   relationshipFilename: string;
-  relationships: { fileName: string; lastRelsId: number; rels: unknown[] }[];
+  relationships: Relationship[];
   mediaFiles: unknown[];
   headerObjects: unknown[];
   footerObjects: unknown[];
@@ -460,7 +471,7 @@ class DocxDocument {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  appendRelationships(xmlFragment, relationships) {
+  appendRelationships(xmlFragment: XMLBuilder, relationships: Relationship['rels']) {
     relationships.forEach(({ relationshipId, type, target, targetMode }) => {
       xmlFragment.import(
         fragment({ defaultNamespace: { ele: namespaces.relationship } })
@@ -514,11 +525,17 @@ class DocxDocument {
     return { id: this.lastMediaId, fileContent: base64FileContent, fileNameWithExtension };
   }
 
-  createDocumentRelationships(fileName = 'document', type, target, targetMode = 'External') {
+  createDocumentRelationships(
+    fileName = 'document',
+    type: 'header' | 'footer' | 'theme' | 'hyperlink' | 'image',
+    target: string,
+    targetMode = 'External',
+    customRelId?: string | number
+  ) {
     let relationshipObject = this.relationships.find(
       (relationship) => relationship.fileName === fileName
     );
-    let lastRelsId = 1;
+    let lastRelsId: number | string = 1;
     if (relationshipObject) {
       lastRelsId = relationshipObject.lastRelsId + 1;
       relationshipObject.lastRelsId = lastRelsId;
@@ -526,7 +543,8 @@ class DocxDocument {
       relationshipObject = { fileName, lastRelsId, rels: [] };
       this.relationships.push(relationshipObject);
     }
-    let relationshipType;
+
+    let relationshipType: string;
     switch (type) {
       case hyperlinkType:
         relationshipType = namespaces.hyperlinks;
@@ -546,7 +564,7 @@ class DocxDocument {
     }
 
     relationshipObject.rels.push({
-      relationshipId: lastRelsId,
+      relationshipId: customRelId || lastRelsId,
       type: relationshipType,
       target,
       targetMode,

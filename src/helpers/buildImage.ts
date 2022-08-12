@@ -42,11 +42,12 @@ export function getPictureAttributes(
           createFolders: false,
         });
 
-      const documentRelsId = docxDocumentInstance.createDocumentRelationships(
+      docxDocumentInstance.createDocumentRelationships(
         docxDocumentInstance.relationshipFilename,
         imageType,
         `media/${response.fileNameWithExtension}`,
-        internalRelationship
+        internalRelationship,
+        response.fileNameWithExtension
       );
 
       const imageBuffer = Buffer.from(response.fileContent, 'base64');
@@ -55,7 +56,7 @@ export function getPictureAttributes(
       return {
         type: 'picture',
         inlineOrAnchored: true,
-        relationshipId: documentRelsId,
+        relationshipId: response.fileNameWithExtension,
         ...response,
         maximumWidth: maximumWidth || docxDocumentInstance.availableDocumentSpace,
         originalWidth: imageProperties.width,

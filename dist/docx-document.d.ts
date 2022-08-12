@@ -34,6 +34,16 @@ declare type Margins = {
 declare type FooterType = 'default' | 'first' | 'even';
 declare type Orientation = 'portrait' | 'landscape';
 declare type HeaderType = 'default' | 'first' | 'even';
+declare type Relationship = {
+    fileName: string;
+    lastRelsId: number;
+    rels: {
+        relationshipId: number | string;
+        type: string;
+        target: string;
+        targetMode: string;
+    }[];
+};
 declare class DocxDocument {
     zip: JSZip;
     htmlString: string;
@@ -69,11 +79,7 @@ declare class DocxDocument {
     stylesObjects: unknown[];
     numberingObjects: NumberObjectProperties[];
     relationshipFilename: string;
-    relationships: {
-        fileName: string;
-        lastRelsId: number;
-        rels: unknown[];
-    }[];
+    relationships: Relationship[];
     mediaFiles: unknown[];
     headerObjects: unknown[];
     footerObjects: unknown[];
@@ -90,7 +96,7 @@ declare class DocxDocument {
     generateFontTableXML(): string;
     generateThemeXML(): string;
     generateNumberingXML(): string;
-    appendRelationships(xmlFragment: any, relationships: any): void;
+    appendRelationships(xmlFragment: XMLBuilder, relationships: Relationship['rels']): void;
     generateRelsXML(): {
         fileName: string;
         xmlString: string;
@@ -101,7 +107,7 @@ declare class DocxDocument {
         fileContent: string;
         fileNameWithExtension: string;
     };
-    createDocumentRelationships(fileName: string, type: any, target: any, targetMode?: string): number;
+    createDocumentRelationships(fileName: string, type: 'header' | 'footer' | 'theme' | 'hyperlink' | 'image', target: string, targetMode?: string, customRelId?: string | number): number;
     generateHeaderXML(vTree: any): SectionXMLHeader;
     generateFooterXML(vTree: any): SectionXMLFooter;
 }
