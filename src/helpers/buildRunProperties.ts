@@ -39,13 +39,13 @@ export function buildRunProperties(attributes: RunAttributes) {
           runPropertiesFragment.import(buildUnderline());
           break;
         case 'color':
-          runPropertiesFragment.import(buildColor(attributes[key]));
+          if (attributes[key]) runPropertiesFragment.import(buildColor(attributes[key]));
           break;
         case 'backgroundColor':
-          runPropertiesFragment.import(buildShading(attributes[key]));
+          if (attributes[key]) runPropertiesFragment.import(buildShading(attributes[key]));
           break;
         case 'fontSize':
-          runPropertiesFragment.import(buildFontSize(attributes[key]));
+          if (attributes[key]) runPropertiesFragment.import(buildFontSize(attributes[key]));
           break;
         case 'hyperlink':
           runPropertiesFragment.import(buildRunStyleFragment('Hyperlink'));
