@@ -5,7 +5,7 @@ const fs = require('fs');
 // const HTMLtoDOCX = require('html-to-docx');
 const HTMLtoDOCX = require('../dist/html-to-docx.umd');
 
-const filePath = './testout/example.docx';
+const filePath = './testout/examplesmall.docx';
 
 const htmlString = `<!DOCTYPE html>
 <html lang="en">
@@ -144,10 +144,10 @@ const htmlString = `<!DOCTYPE html>
     </body>
 </html>`;
 
-const htmlString2 = fs.readFileSync('./testout/html.html').toString();
+const htmlString2 = fs.readFileSync('./testout/small.html').toString();
 (async () => {
   const fileBuffer = await HTMLtoDOCX.generateContainer(
-    htmlString2,
+      htmlString,
     '',
     {
       table: { row: { cantSplit: true } },
