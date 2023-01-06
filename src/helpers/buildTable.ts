@@ -8,6 +8,7 @@ import { cssBorderParser } from './cssBorderParser';
 import { buildTableProperties } from './buildTableProperties';
 import { buildTableGridFromTableRow } from './buildTableGridFromTableRow';
 import { buildTableGrid } from './buildTableGrid';
+import { VNode } from 'virtual-dom';
 
 export type TableBorders = {
   top?: number;
@@ -27,7 +28,7 @@ export type TableCellBorders = {
   right?: number;
 };
 
-export function buildTable(vNode, attributes, docxDocumentInstance) {
+export function buildTable(vNode: VNode, attributes, docxDocumentInstance) {
   const tableFragment = fragment({ namespaceAlias: { w: namespaces.w } }).ele('@w', 'tbl');
   const modifiedAttributes = { ...attributes };
   if (isVNode(vNode) && vNode.properties) {
@@ -130,13 +131,13 @@ export function buildTable(vNode, attributes, docxDocumentInstance) {
 
   if (vNodeHasChildren(vNode)) {
     for (let index = 0; index < vNode.children.length; index++) {
-      const childVNode = vNode.children[index];
+      const childVNode = vNode.children[index] as VNode;
       if (childVNode.tagName === 'colgroup') {
         const tableGridFragment = buildTableGrid(childVNode, modifiedAttributes);
         tableFragment.import(tableGridFragment);
       } else if (childVNode.tagName === 'thead') {
         for (let iteratorIndex = 0; iteratorIndex < childVNode.children.length; iteratorIndex++) {
-          const grandChildVNode = childVNode.children[iteratorIndex];
+          const grandChildVNode = childVNode.children[iteratorIndex] as VNode;
           if (grandChildVNode.tagName === 'tr') {
             if (iteratorIndex === 0) {
               const tableGridFragment = buildTableGridFromTableRow(
@@ -156,7 +157,7 @@ export function buildTable(vNode, attributes, docxDocumentInstance) {
         }
       } else if (childVNode.tagName === 'tbody') {
         for (let iteratorIndex = 0; iteratorIndex < childVNode.children.length; iteratorIndex++) {
-          const grandChildVNode = childVNode.children[iteratorIndex];
+          const grandChildVNode = childVNode.children[iteratorIndex] as VNode;
           if (grandChildVNode.tagName === 'tr') {
             if (iteratorIndex === 0) {
               const tableGridFragment = buildTableGridFromTableRow(

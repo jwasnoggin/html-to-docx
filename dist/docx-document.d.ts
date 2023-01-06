@@ -1,5 +1,6 @@
 import { XMLBuilder } from 'xmlbuilder2/lib/interfaces';
 import JSZip from 'jszip';
+import { DocumentOptions, HeaderFooterType, Margins, Orientation } from 'types';
 export declare type SectionXMLResponse = SectionXMLHeader | SectionXMLFooter;
 export declare type SectionType = 'header' | 'footer';
 export declare type SectionXMLHeader = {
@@ -27,13 +28,6 @@ declare type NumberObjectProperties = {
     properties?: NumberObjectPropertiesProperties;
 };
 declare type GenerateSectionXMLFunction = (vTree: unknown, section: SectionType) => SectionXMLResponse;
-declare type Margins = {
-    left?: number;
-    right?: number;
-};
-declare type FooterType = 'default' | 'first' | 'even';
-declare type Orientation = 'portrait' | 'landscape';
-declare type HeaderType = 'default' | 'first' | 'even';
 declare type Relationship = {
     fileName: string;
     lastRelsId: number;
@@ -44,6 +38,10 @@ declare type Relationship = {
         targetMode: string;
     }[];
 };
+declare type DocxDocumentProperties = {
+    zip: JSZip;
+    htmlString: string;
+} & DocumentOptions;
 declare class DocxDocument {
     zip: JSZip;
     htmlString: string;
@@ -61,9 +59,9 @@ declare class DocxDocument {
     revision?: number;
     createdAt?: Date;
     modifiedAt?: Date;
-    headerType?: HeaderType;
+    headerType?: HeaderFooterType;
     header?: boolean;
-    footerType?: FooterType;
+    footerType?: HeaderFooterType;
     footer?: boolean;
     font?: string;
     fontSize?: number;
@@ -85,7 +83,7 @@ declare class DocxDocument {
     footerObjects: unknown[];
     documentXML: XMLBuilder;
     generateSectionXML: GenerateSectionXMLFunction;
-    constructor(properties: any);
+    constructor(properties: DocxDocumentProperties);
     generateContentTypesXML(): string;
     generateDocumentXML(returnString: false): XMLBuilder;
     generateDocumentXML(returnString?: true): string;

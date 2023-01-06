@@ -1,10 +1,11 @@
+import { HeaderFooterType, Margins, Orientation } from './types';
 import cloneDeep from 'lodash-es/cloneDeep';
 
 const applicationName = 'html-to-docx';
-const defaultOrientation = 'portrait';
+const defaultOrientation: Orientation = 'portrait';
 const landscapeWidth = 15840;
 const landscapeHeight = 12240;
-const landscapeMargins = {
+const landscapeMargins: Margins = {
   top: 1800,
   right: 1440,
   bottom: 1800,
@@ -13,7 +14,7 @@ const landscapeMargins = {
   footer: 720,
   gutter: 0,
 };
-const portraitMargins = {
+const portraitMargins: Margins = {
   top: 1440,
   right: 1800,
   bottom: 1440,
@@ -36,9 +37,9 @@ const defaultDocumentOptions = {
   revision: 1,
   createdAt: new Date(),
   modifiedAt: new Date(),
-  headerType: 'default',
+  headerType: 'default' as HeaderFooterType,
   header: false,
-  footerType: 'default',
+  footerType: 'default' as HeaderFooterType,
   footer: false,
   font: defaultFont,
   fontSize: defaultFontSize,
@@ -112,7 +113,6 @@ export {
   themeFolder,
   landscapeMargins,
   portraitMargins,
-  defaultOrientation,
   landscapeWidth,
   landscapeHeight,
   applicationName,

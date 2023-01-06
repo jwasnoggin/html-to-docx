@@ -46,7 +46,6 @@ export function buildParagraph(
   docxDocumentInstance: DocxDocument
 ): XMLBuilder {
   if (isVText(vNode) && vNode.text === ' ') {
-    console.trace('space node');
     return fragment();
   }
 

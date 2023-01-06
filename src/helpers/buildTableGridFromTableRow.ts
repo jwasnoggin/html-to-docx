@@ -1,12 +1,13 @@
+import { VNode } from 'virtual-dom';
 import { fragment } from 'xmlbuilder2';
 import namespaces from '../namespaces';
 import { vNodeHasChildren } from '../utils/vnode';
 import { buildTableGridCol } from './buildTableGridCol';
 
-export function buildTableGridFromTableRow(vNode, attributes) {
+export function buildTableGridFromTableRow(vNode: VNode, attributes) {
   const tableGridFragment = fragment({ namespaceAlias: { w: namespaces.w } }).ele('@w', 'tblGrid');
   if (vNodeHasChildren(vNode)) {
-    const numberOfGridColumns = vNode.children.reduce((accumulator, childVNode) => {
+    const numberOfGridColumns = vNode.children.reduce((accumulator, childVNode: VNode) => {
       const colSpan =
         childVNode.properties.colSpan ||
         (childVNode.properties.style && childVNode.properties.style['column-span']);

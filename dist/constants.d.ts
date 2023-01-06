@@ -1,38 +1,14 @@
+import { HeaderFooterType, Margins } from './types';
 declare const applicationName = "html-to-docx";
-declare const defaultOrientation = "portrait";
 declare const landscapeWidth = 15840;
 declare const landscapeHeight = 12240;
-declare const landscapeMargins: {
-    top: number;
-    right: number;
-    bottom: number;
-    left: number;
-    header: number;
-    footer: number;
-    gutter: number;
-};
-declare const portraitMargins: {
-    top: number;
-    right: number;
-    bottom: number;
-    left: number;
-    header: number;
-    footer: number;
-    gutter: number;
-};
+declare const landscapeMargins: Margins;
+declare const portraitMargins: Margins;
 declare const defaultFont = "Times New Roman";
 declare const defaultFontSize = 22;
 declare const defaultDocumentOptions: {
-    orientation: string;
-    margins: {
-        top: number;
-        right: number;
-        bottom: number;
-        left: number;
-        header: number;
-        footer: number;
-        gutter: number;
-    };
+    orientation: "portrait";
+    margins: Margins;
     title: string;
     subject: string;
     creator: string;
@@ -42,9 +18,9 @@ declare const defaultDocumentOptions: {
     revision: number;
     createdAt: Date;
     modifiedAt: Date;
-    headerType: string;
+    headerType: HeaderFooterType;
     header: boolean;
-    footerType: string;
+    footerType: HeaderFooterType;
     footer: boolean;
     font: string;
     fontSize: number;
@@ -101,4 +77,4 @@ declare const paragraphBordersObject: {
 };
 declare const colorlessColors: string[];
 declare const verticalAlignValues: string[];
-export { defaultDocumentOptions, defaultHTMLString, relsFolderName, headerFileName, footerFileName, themeFileName, documentFileName, headerType, footerType, themeType, internalRelationship, wordFolder, themeFolder, landscapeMargins, portraitMargins, defaultOrientation, landscapeWidth, landscapeHeight, applicationName, defaultFont, defaultFontSize, hyperlinkType, imageType, paragraphBordersObject, colorlessColors, verticalAlignValues, };
+export { defaultDocumentOptions, defaultHTMLString, relsFolderName, headerFileName, footerFileName, themeFileName, documentFileName, headerType, footerType, themeType, internalRelationship, wordFolder, themeFolder, landscapeMargins, portraitMargins, landscapeWidth, landscapeHeight, applicationName, defaultFont, defaultFontSize, hyperlinkType, imageType, paragraphBordersObject, colorlessColors, verticalAlignValues, };

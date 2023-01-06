@@ -23,7 +23,6 @@ import {
   themeType as themeFileType,
   landscapeMargins,
   portraitMargins,
-  defaultOrientation,
   landscapeWidth,
   landscapeHeight,
   applicationName,
@@ -36,6 +35,8 @@ import {
 import { getListStyleType, getListPrefixSuffix } from './utils/list';
 import { XMLBuilder } from 'xmlbuilder2/lib/interfaces';
 import JSZip from 'jszip';
+import { omit } from 'lodash-es';
+import { DocumentOptions, HeaderFooterType, Margins, Orientation } from 'types';
 
 export type SectionXMLResponse = SectionXMLHeader | SectionXMLFooter;
 
@@ -156,17 +157,6 @@ type NumberObjectProperties = {
 
 type GenerateSectionXMLFunction = (vTree: unknown, section: SectionType) => SectionXMLResponse;
 
-type Margins = {
-  left?: number;
-  right?: number;
-};
-
-type FooterType = 'default' | 'first' | 'even';
-
-type Orientation = 'portrait' | 'landscape';
-
-type HeaderType = 'default' | 'first' | 'even';
-
 type Relationship = {
   fileName: string;
   lastRelsId: number;
@@ -177,6 +167,11 @@ type Relationship = {
     targetMode: string;
   }[];
 };
+
+type DocxDocumentProperties = {
+  zip: JSZip;
+  htmlString: string;
+} & DocumentOptions;
 
 class DocxDocument {
   zip: JSZip;
@@ -195,9 +190,9 @@ class DocxDocument {
   revision?: number;
   createdAt?: Date;
   modifiedAt?: Date;
-  headerType?: HeaderType;
+  headerType?: HeaderFooterType;
   header?: boolean;
-  footerType?: FooterType;
+  footerType?: HeaderFooterType;
   footer?: boolean;
   font?: string;
   fontSize?: number;
@@ -220,23 +215,25 @@ class DocxDocument {
   documentXML: XMLBuilder;
   generateSectionXML: GenerateSectionXMLFunction;
 
-  constructor(properties) {
+  constructor(properties: DocxDocumentProperties) {
+    console.log('creating DocxDocument', JSON.stringify(omit(properties, 'zip', 'htmlString')));
+
     this.zip = properties.zip;
     this.htmlString = properties.htmlString;
     this.orientation = properties.orientation;
 
-    const isPortraitOrientation = this.orientation === defaultOrientation;
-    this.width = isPortraitOrientation ? landscapeHeight : landscapeWidth;
-    this.height = isPortraitOrientation ? landscapeWidth : landscapeHeight;
+    const isPortraitOrientation = this.orientation === 'portrait';
+    this.width = properties.width || (isPortraitOrientation ? landscapeHeight : landscapeWidth);
+    this.height = properties.height || (isPortraitOrientation ? landscapeWidth : landscapeHeight);
 
     const marginsObject = properties.margins;
-    this.margins =
-      // eslint-disable-next-line no-nested-ternary
-      marginsObject && Object.keys(marginsObject).length
-        ? marginsObject
-        : isPortraitOrientation
-        ? portraitMargins
-        : landscapeMargins;
+    if (marginsObject && Object.keys(marginsObject).length) {
+      this.margins = marginsObject;
+    } else if (isPortraitOrientation) {
+      this.margins = portraitMargins;
+    } else {
+      this.margins = landscapeMargins;
+    }
 
     this.availableDocumentSpace = this.width - this.margins.left - this.margins.right;
     this.title = properties.title || '';

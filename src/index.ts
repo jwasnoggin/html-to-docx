@@ -4,6 +4,7 @@ import JSZip from 'jszip';
 import addFilesToContainer, { addRelsToZip } from './html-to-docx';
 import DocxDocument from './docx-document';
 import { renderDocumentFile } from './helpers';
+import { defaultDocumentOptions } from './constants';
 
 const minifyHTMLString = (htmlString: string) => {
   try {
@@ -29,7 +30,7 @@ export async function generateContainer(
   htmlString: string,
   headerHTMLString: string,
   documentOptions: DocumentOptions = {},
-  footerHTMLString: string
+  footerHTMLString: string = ''
 ) {
   const zip = new JSZip();
 
@@ -65,14 +66,18 @@ export async function generateContainer(
 
 /**
  * Convert a HTML snippet into the corresponding XML snippet
- * @param htmlString
+ * @param htmlString String to convert
+ * @param options Options to provide to the converted document (eg width, margins - useful for tables)
  * @returns xmlString: XML snippet (no document or body tag)
  *
  * zip: The generated docx file (including media files)
  */
-export function convertSnippetToXML(htmlString: string): { xmlString: string; zip: JSZip } {
+export function convertSnippetToXML(
+  htmlString: string,
+  options: DocumentOptions = {}
+): { xmlString: string; zip: JSZip } {
   const zip = new JSZip();
-  const docxDocument = new DocxDocument({ htmlString, zip });
+  const docxDocument = new DocxDocument({ htmlString, zip, ...defaultDocumentOptions, ...options });
   // Conversion to Word XML happens here
   docxDocument.documentXML = renderDocumentFile(docxDocument);
   const docXML = docxDocument.generateDocumentXML(false);

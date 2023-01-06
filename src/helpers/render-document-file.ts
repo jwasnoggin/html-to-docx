@@ -53,7 +53,7 @@ function hasPageBreakAfter(vNode: VirtualDOM.VNode): boolean {
 
 function findXMLEquivalent(
   docxDocumentInstance: DocxDocument,
-  vNode: VirtualDOM.VNode | any,
+  vNode: VirtualDOM.VNode,
   xmlFragment: XMLBuilder
 ) {
   if (hasPageBreakBefore(vNode)) {
@@ -102,8 +102,8 @@ function findXMLEquivalent(
     case 'figure': {
       if (vNodeHasChildren(vNode)) {
         // eslint-disable-next-line no-plusplus
-        for (let index = 0; index < vNode.children.length; index++) {
-          const childVNode = vNode.children[index];
+        for (const childVNode of vNode.children) {
+          if (!isVNode(childVNode)) continue;
           if (childVNode.tagName === 'table') {
             const tableFragment = buildTable(
               childVNode,

@@ -12,9 +12,15 @@
         "endOfLine": "auto"
       }
     ],
-    "default-case": "off"
+    "default-case": "off",
+    "@typescript-eslint/no-inferrable-types": [
+      "error",
+      {
+        "ignoreParameters": true
+      }
+    ]
   },
-  "ignorePatterns": "dist/**/*.js",
+  "ignorePatterns": "dist/**/*",
   "env": {
     "node": true
   }

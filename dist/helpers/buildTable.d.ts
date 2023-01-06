@@ -1,3 +1,4 @@
+import { VNode } from 'virtual-dom';
 export declare type TableBorders = {
     top?: number;
     bottom?: number;
@@ -14,4 +15,4 @@ export declare type TableCellBorders = {
     left?: number;
     right?: number;
 };
-export declare function buildTable(vNode: any, attributes: any, docxDocumentInstance: any): import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export declare function buildTable(vNode: VNode, attributes: any, docxDocumentInstance: any): import("xmlbuilder2/lib/interfaces").XMLBuilder;
