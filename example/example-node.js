@@ -35,7 +35,9 @@ const htmlString = `<!DOCTYPE html>
             <h6>This is heading 6</h6>
             <p>Content</p>
         </div>
+        <hr>
         <p>
+            There should be a horizontal line above me.
             <strong>
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
                 a type specimen book.
@@ -147,7 +149,7 @@ const htmlString = `<!DOCTYPE html>
 const htmlString2 = fs.readFileSync('./testout/small.html').toString();
 (async () => {
   const fileBuffer = await HTMLtoDOCX.generateContainer(
-      htmlString,
+    htmlString,
     '',
     {
       table: { row: { cantSplit: true } },

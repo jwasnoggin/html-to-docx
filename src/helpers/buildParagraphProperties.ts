@@ -1,16 +1,18 @@
 import { fragment } from 'xmlbuilder2';
 import namespaces from '../namespaces';
-import { buildNumberingProperties } from './buildFragments';
 import {
+  buildNumberingProperties,
   buildHorizontalAlignment,
   buildPStyle,
   buildIndentation,
   buildSpacing,
 } from './buildFragments';
+import { ParagraphAttributes } from './buildParagraph';
 import { buildParagraphBorder } from './buildParagraphBorder';
+import { buildRunProperties, RunAttributes } from './buildRunProperties';
 import { buildShading } from './buildShading';
 
-export function buildParagraphProperties(attributes) {
+export function buildParagraphProperties(attributes: ParagraphAttributes | RunAttributes) {
   const paragraphPropertiesFragment = fragment({ namespaceAlias: { w: namespaces.w } }).ele(
     '@w',
     'pPr'
@@ -45,6 +47,12 @@ export function buildParagraphProperties(attributes) {
             // eslint-disable-next-line no-param-reassign
             delete attributes.backgroundColor;
           }
+          break;
+        case 'border':
+          paragraphPropertiesFragment.import(buildParagraphBorder(attributes[key]));
+          break;
+        case 'fontSize':
+          paragraphPropertiesFragment.import(buildRunProperties({ fontSize: attributes[key] }));
           break;
         case 'paragraphStyle': {
           const pStyleFragment = buildPStyle(attributes.paragraphStyle);

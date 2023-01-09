@@ -24,6 +24,16 @@ type NumberingAttributes = {
   numberingId: any;
 };
 
+export type BorderAttributes = Record<
+  'top' | 'bottom' | 'left' | 'right',
+  {
+    size: number;
+    spacing: number;
+    color: string;
+    stroke?: string;
+  }
+>;
+
 export type ParagraphAttributes = {
   color?: string;
   backgroundColor?: string;
@@ -31,25 +41,22 @@ export type ParagraphAttributes = {
   textAlign?: any;
   strong?: any;
   fontSize?: any;
-  lineHeight?: any;
+  lineHeight?: string;
+  beforeSpacing?: string;
+  afterSpacing?: string;
   indentation?: any;
   display?: any;
   highlightColor?: any;
   font?: string;
   paragraphStyle?: string;
   numbering?: NumberingAttributes;
+  border?: BorderAttributes;
 };
 
-export function buildParagraph(
-  vNode: VirtualDOM.VNode | VirtualDOM.VTree,
-  attributes: ParagraphAttributes | RunAttributes,
-  docxDocumentInstance: DocxDocument
-): XMLBuilder {
-  if (isVText(vNode) && vNode.text === ' ') {
-    return fragment();
-  }
-
-  const paragraphFragment = fragment({ namespaceAlias: { w: namespaces.w } }).ele('@w', 'p');
+function getModifiedAttributes(
+  vNode: VirtualDOM.VTree,
+  attributes: ParagraphAttributes | RunAttributes
+): ParagraphAttributes | RunAttributes {
   const modifiedAttributes = { ...attributes };
   if (isVNode(vNode) && vNode.properties && vNode.properties.style) {
     if (vNode.properties.style.color && !colorlessColors.includes(vNode.properties.style.color)) {
@@ -116,6 +123,20 @@ export function buildParagraph(
   } else if (isVNode(vNode) && vNode.tagName === 'pre') {
     modifiedAttributes.font = 'Courier';
   }
+  return modifiedAttributes;
+}
+
+export function buildParagraph(
+  vNode: VirtualDOM.VNode | VirtualDOM.VTree,
+  attributes: ParagraphAttributes | RunAttributes,
+  docxDocumentInstance: DocxDocument
+): XMLBuilder {
+  if (isVText(vNode) && vNode.text === ' ') {
+    return fragment();
+  }
+
+  const paragraphFragment = fragment({ namespaceAlias: { w: namespaces.w } }).ele('@w', 'p');
+  const modifiedAttributes = getModifiedAttributes(vNode, attributes);
   const paragraphPropertiesFragment = buildParagraphProperties(modifiedAttributes);
   paragraphFragment.import(paragraphPropertiesFragment);
   if (isVNode(vNode) && vNodeHasChildren(vNode)) {

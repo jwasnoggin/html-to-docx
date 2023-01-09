@@ -11,7 +11,7 @@ export declare const buildVertAlign: (type?: string) => import("xmlbuilder2/lib/
 export declare const buildStrike: () => import("xmlbuilder2/lib/interfaces").XMLBuilder;
 export declare const buildNumberingProperties: (levelId: any, numberingId: any) => import("xmlbuilder2/lib/interfaces").XMLBuilder;
 declare const buildNumberingInstances: () => import("xmlbuilder2/lib/interfaces").XMLBuilder;
-export declare const buildSpacing: (lineSpacing: any, beforeSpacing: any, afterSpacing: any) => import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export declare const buildSpacing: (lineSpacing: string, beforeSpacing: string, afterSpacing: string) => import("xmlbuilder2/lib/interfaces").XMLBuilder;
 export declare const buildIndentation: ({ left, right }: {
     left: any;
     right: any;

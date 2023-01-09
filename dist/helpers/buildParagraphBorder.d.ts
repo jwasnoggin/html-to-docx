@@ -1,1 +1,2 @@
-export declare function buildParagraphBorder(): import("xmlbuilder2/lib/interfaces").XMLBuilder;
+import { BorderAttributes } from './buildParagraph';
+export declare function buildParagraphBorder(bordersObject?: BorderAttributes): import("xmlbuilder2/lib/interfaces").XMLBuilder;

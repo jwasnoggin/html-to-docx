@@ -3,13 +3,17 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import namespaces from '../namespaces';
 import { paragraphBordersObject } from '../constants';
 import { buildBorder } from './buildBorder';
+import { BorderAttributes } from './buildParagraph';
 
-export function buildParagraphBorder() {
+export function buildParagraphBorder(bordersObject?: BorderAttributes) {
   const paragraphBorderFragment = fragment({ namespaceAlias: { w: namespaces.w } }).ele(
     '@w',
     'pBdr'
   );
-  const bordersObject = cloneDeep(paragraphBordersObject);
+
+  if (!bordersObject) {
+    bordersObject = cloneDeep(paragraphBordersObject);
+  }
 
   Object.keys(bordersObject).forEach((borderName) => {
     if (bordersObject[borderName]) {

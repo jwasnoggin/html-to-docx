@@ -158,6 +158,20 @@ function findXMLEquivalent(
       xmlFragment.import(linebreakFragment);
       return;
     }
+    case 'hr': {
+      const hrFragment = buildParagraph(
+        null,
+        {
+          border: {
+            bottom: { size: 6, spacing: 1, color: 'auto' },
+          },
+          fontSize: 12, // Sets 6pt space above line
+        },
+        docxDocumentInstance
+      );
+      xmlFragment.import(hrFragment);
+      return;
+    }
   }
   if (vNodeHasChildren(vNode)) {
     // eslint-disable-next-line no-plusplus

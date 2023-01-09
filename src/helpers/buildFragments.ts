@@ -86,7 +86,7 @@ const buildNumberingInstances = () =>
     .up()
     .up();
 
-export const buildSpacing = (lineSpacing, beforeSpacing, afterSpacing) => {
+export const buildSpacing = (lineSpacing: string, beforeSpacing: string, afterSpacing: string) => {
   const spacingFragment = fragment({ namespaceAlias: { w: namespaces.w } }).ele('@w', 'spacing');
 
   if (lineSpacing) {
