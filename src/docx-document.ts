@@ -226,13 +226,12 @@ class DocxDocument {
     this.width = properties.width || (isPortraitOrientation ? landscapeHeight : landscapeWidth);
     this.height = properties.height || (isPortraitOrientation ? landscapeWidth : landscapeHeight);
 
-    const marginsObject = properties.margins;
-    if (marginsObject && Object.keys(marginsObject).length) {
-      this.margins = marginsObject;
-    } else if (isPortraitOrientation) {
-      this.margins = portraitMargins;
+    // Set margins. If provided margin object is missing some parameters, fall back to defaults.
+    const marginsObject = properties.margins || {};
+    if (isPortraitOrientation) {
+      this.margins = Object.assign(portraitMargins, marginsObject);
     } else {
-      this.margins = landscapeMargins;
+      this.margins = Object.assign(landscapeMargins, marginsObject);
     }
 
     this.availableDocumentSpace = this.width - this.margins.left - this.margins.right;
