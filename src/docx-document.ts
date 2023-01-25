@@ -296,12 +296,18 @@ class DocxDocument {
     return contentTypesXML.toString({ prettyPrint: true });
   }
 
-  generateDocumentXML(returnString: false): XMLBuilder;
-  generateDocumentXML(returnString?: true): string;
-  generateDocumentXML(returnString = true) {
+  generateDocumentXML(returnString: false, includeSectPr?: boolean): XMLBuilder;
+  generateDocumentXML(returnString?: true, includeSectPr?: boolean): string;
+  generateDocumentXML(returnString = true, includeSectPr = true) {
     const documentXML = create(
       { encoding: 'UTF-8', standalone: true },
-      generateDocumentTemplate(this.width, this.height, this.orientation, this.margins)
+      generateDocumentTemplate(
+        this.width,
+        this.height,
+        this.orientation,
+        this.margins,
+        includeSectPr
+      )
     );
     documentXML.root().first().import(this.documentXML);
 
@@ -329,8 +335,10 @@ class DocxDocument {
             .att('@w', 'restart', restart)
         );
     }
+    const docStr = documentXML.toString({ prettyPrint: true });
+    console.log(docStr);
     if (returnString) {
-      return documentXML.toString({ prettyPrint: true });
+      return docStr;
     }
     return documentXML;
   }

@@ -85,8 +85,8 @@ declare class DocxDocument {
     generateSectionXML: GenerateSectionXMLFunction;
     constructor(properties: DocxDocumentProperties);
     generateContentTypesXML(): string;
-    generateDocumentXML(returnString: false): XMLBuilder;
-    generateDocumentXML(returnString?: true): string;
+    generateDocumentXML(returnString: false, includeSectPr?: boolean): XMLBuilder;
+    generateDocumentXML(returnString?: true, includeSectPr?: boolean): string;
     generateCoreXML(): string;
     generateSettingsXML(): string;
     generateWebSettingsXML(): string;

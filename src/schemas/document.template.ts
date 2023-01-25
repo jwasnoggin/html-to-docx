@@ -1,7 +1,14 @@
+import { Margins, Orientation } from 'types';
 import namespaces from '../namespaces';
 
-const generateDocumentTemplate = (width, height, orientation, margins) => `
-  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+const generateDocumentTemplate = (
+  width: number,
+  height: number,
+  orientation: Orientation,
+  margins: Margins,
+  includeSectPr: boolean = true
+) => {
+  let xml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 
     <w:document
         xmlns:a="${namespaces.a}"
@@ -17,19 +24,25 @@ const generateDocumentTemplate = (width, height, orientation, margins) => `
         xmlns:wp="${namespaces.wp}"
         xmlns:wne="${namespaces.wne}"
         >
-        <w:body>
-            <w:sectPr>
-                <w:pgSz w:w="${width}" w:h="${height}" w:orient="${orientation}" />
-                <w:pgMar w:top="${margins.top}"
-                        w:right="${margins.right}"
-                        w:bottom="${margins.bottom}"
-                        w:left="${margins.left}"
-                        w:header="${margins.header}"
-                        w:footer="${margins.footer}"
-                        w:gutter="${margins.gutter}"/>
-            </w:sectPr>
-        </w:body>
+        <w:body>`;
+
+  if (includeSectPr) {
+    xml += `<w:sectPr>
+          <w:pgSz w:w="${width}" w:h="${height}" w:orient="${orientation}" />
+          <w:pgMar w:top="${margins.top}"
+                  w:right="${margins.right}"
+                  w:bottom="${margins.bottom}"
+                  w:left="${margins.left}"
+                  w:header="${margins.header}"
+                  w:footer="${margins.footer}"
+                  w:gutter="${margins.gutter}"/>
+      </w:sectPr>`;
+  }
+  xml += `</w:body>
     </w:document>
   `;
+  console.log(xml);
+  return xml;
+};
 
 export default generateDocumentTemplate;

@@ -70,11 +70,11 @@ export function buildParagraphProperties(attributes: ParagraphAttributes | RunAt
       }
     });
 
-    const spacingFragment = buildSpacing(
-      attributes.lineHeight,
-      attributes.beforeSpacing,
-      attributes.afterSpacing
-    );
+    // const spacingFragment = buildSpacing(
+    //   attributes.lineHeight,
+    //   attributes.beforeSpacing,
+    //   attributes.afterSpacing
+    // );
     // eslint-disable-next-line no-param-reassign
     delete attributes.lineHeight;
     // eslint-disable-next-line no-param-reassign
@@ -82,7 +82,7 @@ export function buildParagraphProperties(attributes: ParagraphAttributes | RunAt
     // eslint-disable-next-line no-param-reassign
     delete attributes.afterSpacing;
 
-    paragraphPropertiesFragment.import(spacingFragment);
+    //paragraphPropertiesFragment.import(spacingFragment);
   }
   paragraphPropertiesFragment.up();
 

@@ -80,7 +80,7 @@ export function convertSnippetToXML(
   const docxDocument = new DocxDocument({ htmlString, zip, ...defaultDocumentOptions, ...options });
   // Conversion to Word XML happens here
   docxDocument.documentXML = renderDocumentFile(docxDocument);
-  const docXML = docxDocument.generateDocumentXML(false);
+  const docXML = docxDocument.generateDocumentXML(false, false);
 
   const rels = docxDocument.relationships;
   console.log('rels', rels[0].rels);
@@ -89,11 +89,22 @@ export function convertSnippetToXML(
   zip.folder('word').file('styles.xml', docxDocument.generateStylesXML(), { createFolders: false });
 
   // Get the body node from the document
-  const body = docXML.root().first();
+  // const body = docXML.root().first();
+  // console.log(docXML.toString({ prettyPrint: true }));
+
+  // const docTag = docXML.toString().match(/(<w:document.*?>)/);
+  // console.log('docTag', docTag);
+
+  // const namespaces = docXML.toString().match(/xmlns:(\w+)="(.+?)"/g);
+  // console.log({ namespaces });
+
   return {
-    // If we extract the nodes inside the body, they lose their w: prefix for some reason. So just do string manipulation to remove the body tags.
-    xmlString: body
+    // If we extract the nodes inside the body, they lose their prefixes for some reason. So just do string manipulation to remove the document and body tags.
+    xmlString: docXML
       .toString()
+      .replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', '')
+      .replace(/(<w:document.*?>)/, '')
+      .replace(/<\/w:document>/, '')
       .replace(/(<w:body.*?>)/, '')
       .replace(/<\/w:body>/, ''),
     zip: docxDocument.zip,
