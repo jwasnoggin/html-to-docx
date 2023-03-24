@@ -11,6 +11,10 @@ import VText from 'virtual-dom/vnode/vtext';
 import { getPictureAttributes } from './buildImage';
 import DocxDocument from 'docx-document';
 import { computeImageDimensions } from './computeImageDimensions';
+import { XMLBuilder } from 'xmlbuilder2/lib/interfaces';
+import { fixupColorCode } from './fixupColorCode';
+import { fixupFontSize } from './fixupFontSize';
+import { colorlessColors } from '../constants';
 
 export function buildRun(
   vNode: VirtualDOM.VNode | VirtualDOM.VTree,
@@ -41,39 +45,22 @@ export function buildRun(
       'pre',
     ].includes(vNode.tagName)
   ) {
-    const textArray = [];
+    const textArray: string[] = [];
 
-    let vNodes: VirtualDOM.VNode[] | VirtualDOM.VTree[] | any[] = [vNode];
+    let vNodes: VirtualDOM.VTree[] = [vNode];
     while (vNodes.length) {
       const tempVNode = vNodes.shift();
+      if (!tempVNode) break;
+
       if (isVText(tempVNode)) {
         textArray.push(tempVNode.text);
       }
-      if (
-        isVNode(tempVNode) &&
-        [
-          'strong',
-          'b',
-          'em',
-          'i',
-          'u',
-          'ins',
-          'strike',
-          'del',
-          's',
-          'sub',
-          'sup',
-          'mark',
-          'code',
-          'pre',
-        ].includes(tempVNode.tagName)
-      ) {
-        const formattingFragment = buildTextFormatting(tempVNode);
-        runPropertiesFragment.import(formattingFragment);
-      }
+      if (isVNode(tempVNode)) {
+        addFormattingFromNode(runPropertiesFragment, tempVNode);
 
-      if (tempVNode.children && tempVNode.children.length) {
-        vNodes = tempVNode.children.slice().concat(vNodes);
+        if (tempVNode.children && tempVNode.children.length) {
+          vNodes = tempVNode.children.slice().concat(vNodes);
+        }
       }
     }
     if (textArray.length) {
@@ -104,4 +91,69 @@ export function buildRun(
   runFragment.up();
 
   return runFragment;
+}
+
+/**
+ * Add the formatting from `tempVNode` to `runPropertiesFragment`
+ */
+function addFormattingFromNode(runPropertiesFragment: XMLBuilder, tempVNode: VirtualDOM.VNode) {
+  if (tempVNode.tagName === 'span') {
+    // Get styles from tempVNode, convert to run properties, then import each property into existing runPropertiesFragment
+    const runAttributes = vNodeStylesToRunAttributes(tempVNode);
+    Object.keys(runAttributes).forEach((key) => {
+      const spanProp = buildTextFormatting(key, runAttributes[key]);
+      if (!spanProp) return;
+
+      // If this property already exists, remove it
+      const existingPropNode = runPropertiesFragment.find(
+        (existingProp) => existingProp.node.nodeName === spanProp.node.nodeName
+      );
+      if (existingPropNode) {
+        existingPropNode.remove();
+      }
+      // Add new property node
+      runPropertiesFragment.import(spanProp);
+    });
+  } else if (
+    [
+      'strong',
+      'b',
+      'em',
+      'i',
+      'u',
+      'ins',
+      'strike',
+      'del',
+      's',
+      'sub',
+      'sup',
+      'mark',
+      'code',
+      'pre',
+    ].includes(tempVNode.tagName)
+  ) {
+    const formattingFragment = buildTextFormatting(tempVNode);
+    if (formattingFragment) runPropertiesFragment.import(formattingFragment);
+  }
+}
+
+export function vNodeStylesToRunAttributes(vNode: VirtualDOM.VNode): RunAttributes {
+  const modifiedAttributes: RunAttributes = {};
+  if (vNode.properties && vNode.properties.style) {
+    if (vNode.properties.style.color && !colorlessColors.includes(vNode.properties.style.color)) {
+      modifiedAttributes.color = fixupColorCode(vNode.properties.style.color);
+    }
+    if (
+      vNode.properties.style['background-color'] &&
+      !colorlessColors.includes(vNode.properties.style['background-color'])
+    ) {
+      modifiedAttributes.backgroundColor = fixupColorCode(
+        vNode.properties.style['background-color']
+      );
+    }
+    if (vNode.properties.style['font-size']) {
+      modifiedAttributes.fontSize = fixupFontSize(vNode.properties.style['font-size']);
+    }
+  }
+  return modifiedAttributes;
 }

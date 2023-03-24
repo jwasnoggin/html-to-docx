@@ -1,3 +1,4 @@
+import { XMLBuilder } from 'xmlbuilder2/lib/interfaces';
 export declare type RunAttributes = {
     [x: string]: string | number | any;
     constructor?: any;
@@ -9,4 +10,4 @@ export declare type RunAttributes = {
     u?: any;
     strong?: any;
 };
-export declare function buildRunProperties(attributes: RunAttributes): import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export declare function buildRunProperties(attributes: RunAttributes): XMLBuilder;

@@ -1,3 +1,4 @@
+import { XMLBuilder } from 'xmlbuilder2/lib/interfaces';
 import {
   buildBold,
   buildItalics,
@@ -6,12 +7,20 @@ import {
   buildVertAlign,
   buildHighlight,
   buildRunFontFragment,
+  buildColor,
+  buildFontSize,
+  buildRunStyleFragment,
 } from './buildFragments';
+import { buildShading } from './buildShading';
 
 // eslint-disable-next-line consistent-return
 
-export function buildTextFormatting(vNode) {
-  switch (vNode.tagName) {
+export function buildTextFormatting(
+  vNodeOrTagName: VirtualDOM.VNode | string,
+  attribute?: any
+): XMLBuilder | undefined {
+  const tagName = typeof vNodeOrTagName === 'string' ? vNodeOrTagName : vNodeOrTagName.tagName;
+  switch (tagName) {
     case 'strong':
     case 'b':
       return buildBold();
@@ -34,6 +43,20 @@ export function buildTextFormatting(vNode) {
     case 'code':
       return buildHighlight('lightGray');
     case 'pre':
+    case 'font':
       return buildRunFontFragment('Courier');
+    case 'color':
+      if (attribute) return buildColor(attribute);
+      break;
+    case 'backgroundColor':
+      if (attribute) return buildShading(attribute);
+      break;
+    case 'fontSize':
+      if (attribute) return buildFontSize(attribute);
+      break;
+    case 'hyperlink':
+      return buildRunStyleFragment('Hyperlink');
+    case 'highlightColor':
+      return buildHighlight(attribute);
   }
 }

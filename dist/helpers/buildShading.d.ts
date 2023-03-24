@@ -1,1 +1,1 @@
-export declare function buildShading(colorCode: any): import("xmlbuilder2/lib/interfaces").XMLBuilder;
+export declare function buildShading(colorCode: string): import("xmlbuilder2/lib/interfaces").XMLBuilder;
