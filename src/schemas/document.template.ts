@@ -41,7 +41,6 @@ const generateDocumentTemplate = (
   xml += `</w:body>
     </w:document>
   `;
-  console.log(xml);
   return xml;
 };
 

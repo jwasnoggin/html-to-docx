@@ -28,7 +28,6 @@ export function getPictureAttributes(
     try {
       // libtidy encodes the image src
       const decoded = decodeURIComponent(get(vNode, 'properties.src'));
-      console.log('decoded', decoded.substring(0, 100));
       response = docxDocumentInstance.createMediaFile(decoded);
     } catch (error) {
       console.warn('error creating media', error);

@@ -52,8 +52,8 @@ export function buildTable(vNode: VNode, attributes, docxDocumentInstance) {
     }
 
     tableBorders.top = borderSize;
-    tableBorders.bottom = borderSize;
     tableBorders.left = borderSize;
+    tableBorders.bottom = borderSize;
     tableBorders.right = borderSize;
     tableBorders.stroke = borderStrike;
     tableBorders.color = borderColor;
@@ -65,8 +65,8 @@ export function buildTable(vNode: VNode, attributes, docxDocumentInstance) {
       tableBorders.insideV = 0;
       tableBorders.insideH = 0;
       tableCellBorders.top = 1;
-      tableCellBorders.bottom = 1;
       tableCellBorders.left = 1;
+      tableCellBorders.bottom = 1;
       tableCellBorders.right = 1;
     }
 

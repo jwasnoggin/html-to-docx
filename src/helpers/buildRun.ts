@@ -58,7 +58,7 @@ export function buildRun(
       if (isVNode(tempVNode)) {
         addFormattingFromNode(runPropertiesFragment, tempVNode);
 
-        if (tempVNode.children && tempVNode.children.length) {
+        if (tempVNode.children?.length) {
           vNodes = tempVNode.children.slice().concat(vNodes);
         }
       }
@@ -73,7 +73,9 @@ export function buildRun(
   runFragment.import(runPropertiesFragment);
 
   if (isVNode(vNode) && vNode.tagName === 'img') {
-    attributes = { ...attributes, ...getPictureAttributes(docxDocumentInstance, vNode) };
+    if (!attributes.fileContent) {
+      attributes = { ...attributes, ...getPictureAttributes(docxDocumentInstance, vNode) };
+    }
     computeImageDimensions(vNode, attributes);
   }
 

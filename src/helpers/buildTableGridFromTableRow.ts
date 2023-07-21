@@ -8,13 +8,11 @@ export function buildTableGridFromTableRow(vNode: VNode, attributes) {
   const tableGridFragment = fragment({ namespaceAlias: { w: namespaces.w } }).ele('@w', 'tblGrid');
   if (vNodeHasChildren(vNode)) {
     const numberOfGridColumns = vNode.children.reduce((accumulator, childVNode: VNode) => {
-      const colSpan =
-        childVNode.properties.colSpan ||
-        (childVNode.properties.style && childVNode.properties.style['column-span']);
+      const colSpan = childVNode.properties.colSpan || childVNode.properties.style?.['column-span'];
 
       return accumulator + (colSpan ? parseInt(colSpan) : 1);
     }, 0);
-    const gridWidth = attributes.maximumWidth / numberOfGridColumns;
+    const gridWidth = Math.floor(attributes.maximumWidth / numberOfGridColumns);
 
     for (let index = 0; index < numberOfGridColumns; index++) {
       const tableGridColFragment = buildTableGridCol(gridWidth);

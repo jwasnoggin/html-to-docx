@@ -251,8 +251,7 @@ class DocxDocument {
     this.font = properties.font || defaultFont;
     this.fontSize = properties.fontSize || defaultFontSize;
     this.complexScriptFontSize = properties.complexScriptFontSize || defaultFontSize;
-    this.tableRowCantSplit =
-      (properties.table && properties.table.row && properties.table.row.cantSplit) || false;
+    this.tableRowCantSplit = properties.table?.row?.cantSplit || false;
     this.pageNumber = properties.pageNumber || false;
     this.skipFirstHeaderFooter = properties.skipFirstHeaderFooter || false;
     this.lineNumber = properties.lineNumber ? properties.lineNumberOptions : null;
@@ -336,7 +335,6 @@ class DocxDocument {
         );
     }
     const docStr = documentXML.toString({ prettyPrint: true });
-    console.log(docStr);
     if (returnString) {
       return docStr;
     }
