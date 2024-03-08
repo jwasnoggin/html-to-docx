@@ -83,7 +83,9 @@ export function convertSnippetToXML(
   const docXML = docxDocument.generateDocumentXML(false, false);
 
   addRelsToZip(zip, docxDocument);
-  zip.folder('word').file('styles.xml', docxDocument.generateStylesXML(), { createFolders: false });
+  zip.folder('word')
+    .file('styles.xml', docxDocument.generateStylesXML(), { createFolders: false })
+    .file('numbering.xml', docxDocument.generateNumberingXML(), { createFolders: false })
 
   return {
     // If we extract the nodes inside the body, they lose their prefixes for some reason. So just do string manipulation to remove the document and body tags.
